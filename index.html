@@ -118,9 +118,7 @@
             background: #441111;
             border-color: #ff3333;
             color: #ff3333;
-        }
-
-        .game-layout {
+        }        .game-layout {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
@@ -293,7 +291,9 @@
             font-weight: bold;
             text-transform: uppercase;
             text-shadow: 0 0 3px red;
-        }        .tint-golden {
+        }
+
+        .tint-golden {
             filter: sepia(1) saturate(3) hue-rotate(5deg);
             border: 2px solid #ffcc00;
         }
@@ -587,9 +587,7 @@
         <button class="btn-auto" id="autoUpgradeBtn" onclick="buyAutoUpgrade()" style="display:none;">Upgrade Auto Power (200 Bucks)</button>
         <button class="btn-merge" id="mergerUnlockBtn" onclick="openMergerMenu()">Unlock Merger (1000 Bucks)</button>
         <button class="btn-sell" onclick="sellUnlockedEntities()">Sell Unlocked Duplicates</button>
-    </div>
-
-    <div style="display: flex; gap: 15px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap;">
+    </div>    <div style="display: flex; gap: 15px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap;">
         <div class="toggle-container">
             <input type="checkbox" id="autosellerToggle" class="toggle-checkbox">
             <label for="autosellerToggle" style="cursor:pointer; color:#ffaa00; font-weight:bold;">🔄 Enable Autoseller</label>
@@ -681,7 +679,9 @@
     </div>
 
     <h3>Your Inventory & Spawn Statistics</h3>
-    <div class="stats-grid" id="statsContainer"></div>    <script>
+    <div class="stats-grid" id="statsContainer"></div>
+
+    <script>
         if ("serviceWorker" in navigator) {
             navigator.serviceWorker.register("./sw.js").catch(() => {});
         }
@@ -698,7 +698,7 @@
             { name: "V-27", weight: 400000, tier: "rare", img: "E27.png" },
             { name: "A-150", weight: 400000, tier: "rare", img: "E8.png" },
             { name: "E-60", weight: 400000, tier: "rare", img: "E10.png" },
-            { name: "U-40", weight: 180000, tier: "epic", img: E5.png" },
+            { name: "U-40", weight: 180000, tier: "epic", img: "E5.png" },
             { name: "U-60", weight: 180000, tier: "epic", img: "E3v1.png" },
             { name: "a-183", weight: 150000, tier: "epic", img: "pixeldude.png" },
             { name: "V-35", weight: 25000, tier: "legendary", img: "E4.png" },
@@ -831,25 +831,26 @@
             currentRoom += amount;
             checkBadgeTriggers();
             updateDisplay();
-        }
-
-        function adminBuffs() {
+        }        function adminBuffs() {
             roomBucks += 10000000;
             rollPower += 100;
             autoPower += 50;
             luckBoostsPurchased += 100;
+
             perksOwned.flashlight = true;
             perksOwned.gummylight = true;
             perksOwned.locker = true;
             perksOwned.a60boost = true;
             perksOwned.millionaire = true;
+
             updateDisplay();
             alert("BUFFS APPLIED");
         }
 
         function toggleInterminableMode() {
             interminableMode = !interminableMode;
-            document.getElementById("adminModeLabel").innerText = "Interminable Mode: " + (interminableMode ? "ON" : "OFF");
+            document.getElementById("adminModeLabel").innerText =
+                "Interminable Mode: " + (interminableMode ? "ON" : "OFF");
         }
 
         function makeBlazeRollable() {
@@ -858,11 +859,15 @@
         }
 
         function renderBadgeOverviewDisplay() {
-            const container = document.getElementById('badgeContainer');
-            container.innerHTML = '';
+            const container = document.getElementById("badgeContainer");
+            container.innerHTML = "";
+
             for (const [key, b] of Object.entries(badges)) {
-                const cardClass = b.won ? 'badge-overview-card unlocked-status' : 'badge-overview-card';
-                const statusPill = b.won ? '<span class="badge-status-pill pill-unlocked">✅ Unlocked</span>' : '<span class="badge-status-pill pill-locked">🔒 Locked</span>';
+                const cardClass = b.won ? "badge-overview-card unlocked-status" : "badge-overview-card";
+                const statusPill = b.won
+                    ? '<span class="badge-status-pill pill-unlocked">✅ Unlocked</span>'
+                    : '<span class="badge-status-pill pill-locked">🔒 Locked</span>';
+
                 container.innerHTML += `
                     <div class="${cardClass}" id="badge-${key}">
                         ${statusPill}
@@ -882,23 +887,43 @@
             if (totalRollsCount >= 50000 && !badges.speechless.won) { badges.speechless.won = true; changed = true; alert("🏆 BADGE UNLOCKED: Speechless"); }
 
             if (roomBucks >= 1000000000 && !badges.billionaire.won) { badges.billionaire.won = true; changed = true; alert("🏆 BADGE UNLOCKED: Billionaire!"); }
-            if (roomBucks >= 5000000 && !badges.rich.won) { badges.rich.won = true; roomBucks += 500000; changed = true; alert("🏆 BADGE UNLOCKED: Rich!"); }
+            if (roomBucks >= 5000000 && !badges.rich.won) {
+                badges.rich.won = true;
+                roomBucks += 500000;
+                changed = true;
+                alert("🏆 BADGE UNLOCKED: Rich!");
+            }
+
             if (roomBucks >= 300000 && !badges.multithousand.won) {
                 badges.multithousand.won = true;
                 roomBucks += 25000;
                 changed = true;
+
                 perksOwned.flashlight = true;
                 perksOwned.gummylight = true;
-                document.getElementById('perk-flashlight').disabled = true;
-                document.getElementById('perk-gummylight').disabled = true;
+
+                document.getElementById("perk-flashlight").disabled = true;
+                document.getElementById("perk-gummylight").disabled = true;
+
                 alert("🏆 BADGE UNLOCKED: Multi-Thousanaire!");
             }
 
             let totalInterminables = 0;
-            for (const item of Object.values(inventory)) totalInterminables += item.interminable;
-            if (totalInterminables >= 50 && !badges.interminable.won) { badges.interminable.won = true; changed = true; alert("🏆 BADGE UNLOCKED: Interminable Entities!"); }
+            for (const item of Object.values(inventory)) {
+                totalInterminables += item.interminable;
+            }
 
-            if (adoptedPets.length >= 5 && !badges.entitylady.won) { badges.entitylady.won = true; changed = true; alert("🏆 BADGE UNLOCKED: Entity Lady!"); }
+            if (totalInterminables >= 50 && !badges.interminable.won) {
+                badges.interminable.won = true;
+                changed = true;
+                alert("🏆 BADGE UNLOCKED: Interminable Entities!");
+            }
+
+            if (adoptedPets.length >= 5 && !badges.entitylady.won) {
+                badges.entitylady.won = true;
+                changed = true;
+                alert("🏆 BADGE UNLOCKED: Entity Lady!");
+            }
 
             if (changed) renderBadgeOverviewDisplay();
             updateDisplay();
@@ -907,59 +932,88 @@
         function updateDisplay() {
             const discountFactor = perksOwned.millionaire ? 0.995 : 1.0;
 
-            document.getElementById('bucksCount').innerText = Math.floor(roomBucks).toLocaleString();
-            document.getElementById('rollPowerCount').innerText = Math.floor(rollPower).toLocaleString();
-            document.getElementById('autoPowerCount').innerText = Math.floor(autoPower).toLocaleString();
-            document.getElementById('currentRoomLabel').innerText = Math.floor(currentRoom).toLocaleString();
-            document.getElementById('rollsLabel').innerText = Math.floor(totalRollsCount).toLocaleString();
+            document.getElementById("bucksCount").innerText = Math.floor(roomBucks).toLocaleString();
+            document.getElementById("rollPowerCount").innerText = Math.floor(rollPower).toLocaleString();
+            document.getElementById("autoPowerCount").innerText = Math.floor(autoPower).toLocaleString();
+            document.getElementById("currentRoomLabel").innerText = Math.floor(currentRoom).toLocaleString();
+            document.getElementById("rollsLabel").innerText = Math.floor(totalRollsCount).toLocaleString();
 
-            document.getElementById('upgradeBtn').innerText = `Upgrade Click Power (${Math.floor(upgradeCost * discountFactor)} Bucks)`;
-            document.getElementById('autoUpgradeBtn').innerText = `Upgrade Auto Power (${Math.floor(autoUpgradeCost * discountFactor)} Bucks)`;
-            document.getElementById('perk-luckboost').innerText = `🍀 Luck Boost [Level: ${luckBoostsPurchased}] [Cost: ${Math.floor(luckBoostCost * discountFactor).toLocaleString()}] (+${(luckBoostsPurchased * 0.1).toFixed(1)}% Luck)`;
+            document.getElementById("upgradeBtn").innerText =
+                `Upgrade Click Power (${Math.floor(upgradeCost * discountFactor)} Bucks)`;
 
-            document.getElementById('petCountLabel').innerText = adoptedPets.length;
+            document.getElementById("autoUpgradeBtn").innerText =
+                `Upgrade Auto Power (${Math.floor(autoUpgradeCost * discountFactor)} Bucks)`;
 
-            document.getElementById('foodDisplay').innerText = `🍖 Food: ${sanctuarySupplies.food}`;
-            document.getElementById('waterDisplay').innerText = `💧 Water: ${sanctuarySupplies.water}`;
-            document.getElementById('litterDisplay').innerText = `⏳ Litter: ${sanctuarySupplies.litter}`;
+            document.getElementById("perk-luckboost").innerText =
+                `🍀 Luck Boost [Level: ${luckBoostsPurchased}] [Cost: ${Math.floor(luckBoostCost * discountFactor).toLocaleString()}] (+${(luckBoostsPurchased * 0.1).toFixed(1)}% Luck)`;
 
-            document.getElementById('foodDisplay').className = sanctuarySupplies.food <= 5 ? "supply-indicator supply-danger" : "supply-indicator supply-ok";
-            document.getElementById('waterDisplay').className = sanctuarySupplies.water <= 5 ? "supply-indicator supply-danger" : "supply-indicator supply-ok";
-            document.getElementById('litterDisplay').className = sanctuarySupplies.litter <= 5 ? "supply-indicator supply-danger" : "supply-indicator supply-ok";
+            document.getElementById("petCountLabel").innerText = adoptedPets.length;
 
-            if (badges.cannibalistic.won) document.getElementById('cannibalisticStatusMessage').style.display = 'block';
+            document.getElementById("foodDisplay").innerText = `🍖 Food: ${sanctuarySupplies.food}`;
+            document.getElementById("waterDisplay").innerText = `💧 Water: ${sanctuarySupplies.water}`;
+            document.getElementById("litterDisplay").innerText = `⏳ Litter: ${sanctuarySupplies.litter}`;
+
+            document.getElementById("foodDisplay").className =
+                sanctuarySupplies.food <= 5 ? "supply-indicator supply-danger" : "supply-indicator supply-ok";
+
+            document.getElementById("waterDisplay").className =
+                sanctuarySupplies.water <= 5 ? "supply-indicator supply-danger" : "supply-indicator supply-ok";
+
+            document.getElementById("litterDisplay").className =
+                sanctuarySupplies.litter <= 5 ? "supply-indicator supply-danger" : "supply-indicator supply-ok";
+
+            if (badges.cannibalistic.won) {
+                document.getElementById("cannibalisticStatusMessage").style.display = "block";
+            }
         }
 
         function buyLuckBoost() {
             const actualCost = Math.floor(luckBoostCost * (perksOwned.millionaire ? 0.995 : 1.0));
+
             if (roomBucks >= actualCost) {
                 roomBucks -= actualCost;
                 luckBoostsPurchased++;
                 luckBoostCost = Math.floor(luckBoostCost * 1.10);
                 updateDisplay();
-            } else alert("Insufficient funds for Luck Boost upgrades!");
+            } else {
+                alert("Insufficient funds for Luck Boost upgrades!");
+            }
         }
 
         function buyPerk(perkName) {
             if (perksOwned[perkName]) return;
-            const cost = { flashlight: 1500, gummylight: 3500, locker: 7750, a60boost: 5000, millionaire: 100000 }[perkName];
+
+            const cost = {
+                flashlight: 1500,
+                gummylight: 3500,
+                locker: 7750,
+                a60boost: 5000,
+                millionaire: 100000
+            }[perkName];
 
             if (roomBucks >= cost) {
                 roomBucks -= cost;
                 perksOwned[perkName] = true;
+
                 const btn = document.getElementById(`perk-${perkName}`);
                 btn.disabled = true;
                 btn.innerHTML = btn.innerHTML.replace(/\[Cost: .*?\]/, "[OWNED ✓]");
+
                 updateDisplay();
-            } else alert("Insufficient funds for perk.");
+            } else {
+                alert("Insufficient funds for perk.");
+            }
         }
 
         function getRandomEntity() {
             let luckMultiplier = 1.0;
+
             if (perksOwned.gummylight) luckMultiplier += 0.002;
             if (perksOwned.a60boost) luckMultiplier += 0.01;
             if (perksOwned.millionaire) luckMultiplier += 0.10;
+
             luckMultiplier += luckBoostsPurchased * 0.001;
+
             if (badges.what.won || badges.billionaire.won) luckMultiplier += 10.0;
             if (badges.rich.won) luckMultiplier += 2.0;
             if (badges.multithousand.won) luckMultiplier += 1.25;
@@ -972,15 +1026,19 @@
 
             const totalWeight = availablePool.reduce((sum, entity) => {
                 let w = entity.weight;
+
                 if (entity.name === "A-60" && perksOwned.a60boost) w *= 1.005;
                 if (entity.tier === "common" && badges.division.won) w *= 0.5;
                 if (entity.tier !== "common") w *= luckMultiplier;
+
                 return sum + w;
             }, 0);
 
             let random = Math.random() * totalWeight;
+
             for (const entity of availablePool) {
                 let w = entity.weight;
+
                 if (entity.name === "A-60" && perksOwned.a60boost) w *= 1.005;
                 if (entity.tier === "common" && badges.division.won) w *= 0.5;
                 if (entity.tier !== "common") w *= luckMultiplier;
@@ -988,6 +1046,7 @@
                 if (random < w) return entity;
                 random -= w;
             }
+
             return availablePool[0];
         }
 
@@ -998,35 +1057,48 @@
 
         function buyAutoRoller() {
             if (autoRollerUnlocked) return;
+
             if (roomBucks >= 500) {
                 roomBucks -= 500;
                 autoRollerUnlocked = true;
                 autoPower = 1;
-                document.getElementById('autoUnlockBtn').style.display = 'none';
-                document.getElementById('autoUpgradeBtn').style.display = 'inline-block';
+
+                document.getElementById("autoUnlockBtn").style.display = "none";
+                document.getElementById("autoUpgradeBtn").style.display = "inline-block";
+
                 updateDisplay();
-            } else alert("Needs 500 Room Bucks!");
+            } else {
+                alert("Needs 500 Room Bucks!");
+            }
         }
 
         function buyAutoUpgrade() {
             const actualCost = Math.floor(autoUpgradeCost * (perksOwned.millionaire ? 0.995 : 1.0));
+
             if (roomBucks >= actualCost) {
                 roomBucks -= actualCost;
                 autoPower++;
                 autoUpgradeCost += 100;
                 updateDisplay();
-            } else alert("Insufficient funds for Auto Power upgrade!");
+            } else {
+                alert("Insufficient funds for Auto Power upgrade!");
+            }
         }
 
         function buyRollUpgrade() {
             const actualCost = Math.floor(upgradeCost * (perksOwned.millionaire ? 0.995 : 1.0));
+
             if (roomBucks >= actualCost) {
                 roomBucks -= actualCost;
                 rollPower++;
                 upgradeCost += 50;
                 updateDisplay();
-            } else alert("Insufficient funds for Click Power upgrade!");
-        }        function sellUnlockedEntities() {
+            } else {
+                alert("Insufficient funds for Click Power upgrade!");
+            }
+        }
+
+        function sellUnlockedEntities() {
             let totalEarned = 0;
 
             for (const [name, data] of Object.entries(inventory)) {
@@ -1069,9 +1141,9 @@
                 roomBucks -= 1000;
                 mergerUnlocked = true;
 
-                document.getElementById('mergerStatus').style.display = 'none';
-                document.getElementById('mergerControls').style.display = 'flex';
-                document.getElementById('mergerUnlockBtn').style.display = 'none';
+                document.getElementById("mergerStatus").style.display = "none";
+                document.getElementById("mergerControls").style.display = "flex";
+                document.getElementById("mergerUnlockBtn").style.display = "none";
 
                 updateDisplay();
                 renderMergerPanel();
@@ -1081,8 +1153,8 @@
         }
 
         function renderPetShopOptions() {
-            const shopContainer = document.getElementById('petShopContainer');
-            shopContainer.innerHTML = '';
+            const shopContainer = document.getElementById("petShopContainer");
+            shopContainer.innerHTML = "";
 
             entityPool.forEach(entity => {
                 if (entity.adminOnly && !adminUnlocked) return;
@@ -1102,8 +1174,7 @@
                         <button class="btn-buy" style="font-size:0.8rem; padding:4px 8px;" onclick="adoptPet('${entity.name}')">
                             Adopt
                         </button>
-                    </div>
-                `;
+                    </div>`;
             });
         }
 
@@ -1167,19 +1238,20 @@
         }
 
         function renderActivePetsSanctuary() {
-            const listContainer = document.getElementById('activePetsList');
-            listContainer.innerHTML = '';
+            const listContainer = document.getElementById("activePetsList");
+            listContainer.innerHTML = "";
 
             const blazeAttackActive = hasBlazePet();
 
             if (adoptedPets.length === 0) {
-                listContainer.innerHTML = '<div style="color:#666; font-size:0.9rem; padding:10px;">No companion entities living in the sanctuary blocks yet.</div>';
+                listContainer.innerHTML =
+                    '<div style="color:#666; font-size:0.9rem; padding:10px;">No companion entities living in the sanctuary blocks yet.</div>';
             } else {
                 adoptedPets.forEach(pet => {
                     const shakeClass =
                         petsAreAngry || (blazeAttackActive && pet.name !== "Blaze")
-                            ? 'pet-card angry-shake'
-                            : 'pet-card';
+                            ? "pet-card angry-shake"
+                            : "pet-card";
 
                     let statusMsg = '<span style="color:#00ffaa;" class="pet-card-status-text">😊 Peaceful & Happy</span>';
 
@@ -1206,17 +1278,15 @@
                             </div>
                             <strong class="${pet.tier}">${pet.name}</strong>
                             ${statusMsg}
-                        </div>
-                    `;
+                        </div>`;
                 });
             }
 
-            const furnitureContainer = document.getElementById('furnitureGrid');
-            furnitureContainer.innerHTML = '';
+            const furnitureContainer = document.getElementById("furnitureGrid");
+            furnitureContainer.innerHTML = "";
 
             for (let i = 1; i <= 5; i++) {
-                const isActive = i <= adoptedPets.length;
-                const activeClass = isActive ? 'furniture-active' : '';
+                const activeClass = i <= adoptedPets.length ? "furniture-active" : "";
 
                 furnitureContainer.innerHTML += `<div class="furniture-item ${activeClass}">🥣 Bowl ${i}</div>`;
                 furnitureContainer.innerHTML += `<div class="furniture-item ${activeClass}">💧 Water ${i}</div>`;
@@ -1229,38 +1299,26 @@
             setInterval(() => {
                 const petCount = adoptedPets.length;
 
-                const autownerActive = document.getElementById('autownerToggle').checked;
+                const autownerActive = document.getElementById("autownerToggle").checked;
 
                 if (autownerActive && petCount > 0 && !badges.cannibalistic.won) {
-                    if (sanctuarySupplies.food <= petCount) buySupplies('food', 20);
-                    if (sanctuarySupplies.water <= petCount) buySupplies('water', 20);
-                    if (sanctuarySupplies.litter <= petCount) buySupplies('litter', 20);
+                    if (sanctuarySupplies.food <= petCount) buySupplies("food", 20);
+                    if (sanctuarySupplies.water <= petCount) buySupplies("water", 20);
+                    if (sanctuarySupplies.litter <= petCount) buySupplies("litter", 20);
                 }
 
                 if (petCount > 0) {
                     let outOfSupplies = false;
 
                     if (!badges.cannibalistic.won) {
-                        if (sanctuarySupplies.food >= petCount) {
-                            sanctuarySupplies.food -= petCount;
-                        } else {
-                            sanctuarySupplies.food = 0;
-                            outOfSupplies = true;
-                        }
+                        if (sanctuarySupplies.food >= petCount) sanctuarySupplies.food -= petCount;
+                        else { sanctuarySupplies.food = 0; outOfSupplies = true; }
 
-                        if (sanctuarySupplies.water >= petCount) {
-                            sanctuarySupplies.water -= petCount;
-                        } else {
-                            sanctuarySupplies.water = 0;
-                            outOfSupplies = true;
-                        }
+                        if (sanctuarySupplies.water >= petCount) sanctuarySupplies.water -= petCount;
+                        else { sanctuarySupplies.water = 0; outOfSupplies = true; }
 
-                        if (sanctuarySupplies.litter >= petCount) {
-                            sanctuarySupplies.litter -= petCount;
-                        } else {
-                            sanctuarySupplies.litter = 0;
-                            outOfSupplies = true;
-                        }
+                        if (sanctuarySupplies.litter >= petCount) sanctuarySupplies.litter -= petCount;
+                        else { sanctuarySupplies.litter = 0; outOfSupplies = true; }
                     }
 
                     petsAreAngry = outOfSupplies;
@@ -1277,11 +1335,8 @@
                     let totalPayout = 0;
 
                     adoptedPets.forEach(pet => {
-                        if (pet.tier === 'godly') {
-                            totalPayout += 5;
-                        } else {
-                            totalPayout += pet.baseCost * 0.25;
-                        }
+                        if (pet.tier === "godly") totalPayout += 5;
+                        else totalPayout += pet.baseCost * 0.25;
                     });
 
                     if (totalPayout > 0) {
@@ -1325,17 +1380,15 @@
                     executeSpawns(speedPower, "🤖 Auto-Roller");
                 }
 
-                const autosellerActive = document.getElementById('autosellerToggle').checked;
-
-                if (autosellerActive) {
+                if (document.getElementById("autosellerToggle").checked) {
                     sellUnlockedEntities();
                 }
             }, 1000);
         }
 
         function executeSpawns(amount, runnerSource) {
-            const logContainer = document.getElementById('resultsLog');
-            let logHTML = '';
+            const logContainer = document.getElementById("resultsLog");
+            let logHTML = "";
 
             totalRollsCount += amount;
 
@@ -1389,7 +1442,7 @@
                 if (entity.name === "E-200" && !badges.what.won) {
                     badges.what.won = true;
                     roomBucks += 1000000;
-                    document.getElementById('godlyMergerTitle').innerText = "(GODLY ENABLED)";
+                    document.getElementById("godlyMergerTitle").innerText = "(GODLY ENABLED)";
                     renderBadgeOverviewDisplay();
                     alert("🏆 BADGE UNLOCKED: Uh.. what?");
                 }
@@ -1405,15 +1458,10 @@
                 if (interminableMode) {
                     const modeRoll = Math.random();
 
-                    if (modeRoll < 0.01) {
-                        inventory[entity.name].diamond++;
-                    } else if (modeRoll < 0.06) {
-                        inventory[entity.name].godlyStack++;
-                    } else if (modeRoll < 0.96) {
-                        inventory[entity.name].interminable++;
-                    } else {
-                        inventory[entity.name].base++;
-                    }
+                    if (modeRoll < 0.01) inventory[entity.name].diamond++;
+                    else if (modeRoll < 0.06) inventory[entity.name].godlyStack++;
+                    else if (modeRoll < 0.96) inventory[entity.name].interminable++;
+                    else inventory[entity.name].base++;
                 } else if (badges.interminable.won && Math.random() < 0.01) {
                     inventory[entity.name].interminable++;
                 } else if (perksOwned.locker && Math.random() < 0.005) {
@@ -1455,19 +1503,19 @@
         }
 
         function mergeEntity(name, targetTier) {
-            if (targetTier === 'golden' && inventory[name].base >= 3) {
+            if (targetTier === "golden" && inventory[name].base >= 3) {
                 inventory[name].base -= 3;
                 inventory[name].golden++;
-            } else if (targetTier === 'diamond' && inventory[name].golden >= 3) {
+            } else if (targetTier === "diamond" && inventory[name].golden >= 3) {
                 inventory[name].golden -= 3;
                 inventory[name].diamond++;
-            } else if (targetTier === 'interminable' && inventory[name].diamond >= 3) {
+            } else if (targetTier === "interminable" && inventory[name].diamond >= 3) {
                 inventory[name].diamond -= 3;
                 inventory[name].interminable++;
-            } else if (targetTier === 'godlyStack' && inventory[name].interminable >= 5) {
+            } else if (targetTier === "godlyStack" && inventory[name].interminable >= 5) {
                 inventory[name].interminable -= 5;
                 inventory[name].godlyStack++;
-            } else if (targetTier === 'cannibalistic' && inventory[name].base >= 3 && inventory[name].interminable >= 5) {
+            } else if (targetTier === "cannibalistic" && inventory[name].base >= 3 && inventory[name].interminable >= 5) {
                 inventory[name].base -= 3;
                 inventory[name].interminable -= 5;
                 inventory[name].cannibalistic++;
@@ -1480,8 +1528,8 @@
         }
 
         function renderMergerPanel() {
-            const container = document.getElementById('mergerControls');
-            container.innerHTML = '<h4>Available Fusions:</h4>';
+            const container = document.getElementById("mergerControls");
+            container.innerHTML = "<h4>Available Fusions:</h4>";
 
             let activeMerges = 0;
 
@@ -1518,8 +1566,8 @@
         }
 
         function renderInventoryDisplay() {
-            const container = document.getElementById('statsContainer');
-            container.innerHTML = '';
+            const container = document.getElementById("statsContainer");
+            container.innerHTML = "";
 
             for (const [name, data] of Object.entries(inventory)) {
                 const totalCollected =
@@ -1537,19 +1585,19 @@
                 container.innerHTML += `
                     <div class="stat-card ${data.tier}">
                         <div class="card-top-right">
-                            <button class="btn-lock ${data.isLocked ? 'is-locked' : ''}" onclick="toggleLock('${name}')">
-                                ${data.isLocked ? '🔒 Locked' : '🔓 Unlocked'}
+                            <button class="btn-lock ${data.isLocked ? "is-locked" : ""}" onclick="toggleLock('${name}')">
+                                ${data.isLocked ? "🔒 Locked" : "🔓 Unlocked"}
                             </button>
                         </div>
 
                         <div class="card-header-info">
                             <div class="sprite-wrapper">
                                 <img class="sprite
-                                    ${(data.cannibalistic || 0) > 0 ? 'tint-cannibalistic' :
-                                    data.godlyStack > 0 ? 'tint-godlystack' :
-                                    data.interminable > 0 ? 'tint-interminable' :
-                                    data.diamond > 0 ? 'tint-diamond' :
-                                    data.golden > 0 ? 'tint-golden' : ''}"
+                                    ${(data.cannibalistic || 0) > 0 ? "tint-cannibalistic" :
+                                    data.godlyStack > 0 ? "tint-godlystack" :
+                                    data.interminable > 0 ? "tint-interminable" :
+                                    data.diamond > 0 ? "tint-diamond" :
+                                    data.golden > 0 ? "tint-golden" : ""}"
                                     src="${data.img}">
                             </div>
 
@@ -1565,11 +1613,10 @@
                         <div class="tier-row"><span class="lbl-interminable">Interminable (${basePrice * 10}💰):</span> <span>${data.interminable}</span></div>
                         <div class="tier-row"><span class="lbl-godlystack">Godly Stack (${basePrice * 25}💰):</span> <span>${data.godlyStack}</span></div>
                         <div class="tier-row"><span class="lbl-cannibalistic">Cannibalistic (${basePrice * 25}💰):</span> <span>${data.cannibalistic || 0}</span></div>
-                    </div>
-                `;
+                    </div>`;
             }
 
-            if (container.innerHTML === '') {
+            if (container.innerHTML === "") {
                 container.innerHTML = '<div style="color:#666; padding: 10px;">Empty exploration inventory bags.</div>';
             }
         }
