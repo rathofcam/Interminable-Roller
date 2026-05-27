@@ -1,0 +1,21 @@
+{
+  "name": "Interminable Rooms Multi-Roller",
+  "short_name": "IR Roller",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#111111",
+  "theme_color": "#ff3333",
+  "description": "A creepy Interminable Rooms rolling game with entities, pets, badges, and upgrades.",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
